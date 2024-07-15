@@ -17,6 +17,10 @@
             padding: 20px;
             text-align: center;
         }
+        header h1 {
+            font-size: 2.5em; /* Increase the font size */
+            color: #ffd700; /* Gold */
+        }
         nav {
             display: flex;
             justify-content: center;
@@ -51,6 +55,10 @@
         section:last-child {
             border-bottom: none;
             margin-bottom: 0;
+        }
+        .smaller-bold {
+            font-size: 0.9em;
+            font-weight: bold;
         }
         /* Media Query for Mobile Devices */
         @media (max-width: 600px) {
@@ -108,17 +116,17 @@
 
             <h3>Cryptocurrencies</h3>
 
-            <h4>AprilCoin (APRIL)</h4>
+            <h4><span class="smaller-bold">AprilCoin (APRIL)</span></h4>
             <p>AprilCoin is an SPL token built on Solana, serving as a global currency and the official currency of the April Metaverse upon its launch. It will also be used as an airdrop reward for future holders of April Metaverse digital land NFTs, as well as a reward for staking AprilCoin once staking is implemented. It will function as a governance token for voting on changes to the April Metaverse.</p>
 
-            <h5>Tokenomics:</h5>
+            <h5><span class="smaller-bold">Tokenomics:</span></h5>
             <ul>
                 <li>Total Supply: 1,000,000,000</li>
                 <li>Max Supply: 1,000,000,000</li>
                 <li>Supply is capped at 1,000,000,000 coins</li>
             </ul>
 
-            <h5>Token Distribution:</h5>
+            <h5><span class="smaller-bold">Token Distribution:</span></h5>
             <ul>
                 <li>50% to original SOL/APRIL liquidity pool on Raydium. Original coin price was set at $139 in SOL for 500,000,000 coins.</li>
                 <li>20% to airdrops for Trillionaire NFT and digital land NFT holders.</li>
@@ -129,10 +137,10 @@
 
             <p>The original LP tokens were burned by the SOL Incinerator to protect the original coin price.</p>
 
-            <h4>DogCoin (DOG)</h4>
+            <h4><span class="smaller-bold">DogCoin (DOG)</span></h4>
             <p>DogCoin is an SPL token built on the Solana blockchain, serving as a global currency and utility coin within the April Investments ecosystem.</p>
 
-            <h5>Tokenomics:</h5>
+            <h5><span class="smaller-bold">Tokenomics:</span></h5>
             <ul>
                 <li>Total Supply: 27,000,000,000,000</li>
                 <li>Max Supply: 27,000,000,000,000</li>
@@ -149,10 +157,10 @@
 
             <p>DogCoin aims to be a leading currency and investment vehicle globally, offering a safe haven for crypto investors through our commitment to product integrity and service excellence.</p>
 
-            <h4>CatCoin (CAT)</h4>
+            <h4><span class="smaller-bold">CatCoin (CAT)</span></h4>
             <p>CatCoin is an SPL token built on the Solana blockchain, serving as a global currency and utility coin within the April Investments ecosystem.</p>
 
-            <h5>Tokenomics:</h5>
+            <h5><span class="smaller-bold">Tokenomics:</span></h5>
             <ul>
                 <li>Total Supply: 27,000,000,000,000</li>
                 <li>Max Supply: 27,000,000,000,000</li>
@@ -168,71 +176,12 @@
             </ul>
 
             <p>CatCoin aims to be a leading currency and investment vehicle globally, offering a safe haven for crypto investors through our commitment to product integrity and service excellence.</p>
-
-            <h4>BearCoin (BEAR)</h4>
-            <p>BearCoin is an SPL token built on the Solana blockchain, serving as a global currency and utility coin within the April Investments ecosystem.</p>
-
-            <h5>Tokenomics:</h5>
-            <ul>
-                <li>Total Supply: 25,000,000,000,000</li>
-                <li>Max Supply: 25,000,000,000,000</li>
-                <li>Supply is capped at 25,000,000,000,000 coins</li>
-            </ul>
-
-            <h5>Distribution:</h5>
-            <ul>
-                <li>50% to original SOL/BEAR liquidity pool on Raydium. Original coin price was set at 0.25 SOL for 12,500,000,000,000 coins. Original LP tokens were burned by the SOL Incinerator to protect the original coin price.</li>
-                <li>20% to airdrops and staking for April Investments products.</li>
-                <li>20% to Marketing.</li>
-                <li>10% to Founder.</li>
-            </ul>
-
-            <p>BearCoin aims to be a leading currency and investment vehicle globally, offering a safe haven for crypto investors through our commitment to product integrity and service excellence.</p>
-
-            <h4>SkiCoin (SKI)</h4>
-            <p>SkiCoin is an SPL token built on Solana, intended to be the currency of the April Metaverse once it is established.</p>
-
-            <h5>Tokenomics:</h5>
-            <ul>
-                <li>Total Supply: 10,000,000,000</li>
-                <li>Max Supply: 10,000,000,000</li>
-                <li>Supply is capped at 10,000,000,000 coins</li>
-            </ul>
-
-            <h5>Distribution:</h5>
-            <ul>
-                <li>50% to original SOL/SKI liquidity pool on Raydium. Original coin price was set at $139 in SOL for 500,000,000 coins.</li>
-                <li>20% to airdrops for Trillionaire NFT and digital land NFT holders.</li>
-                <li>10% for staking rewards.</li>
-                <li>10% to Marketing.</li>
-                <li>10% to Founder.</li>
-            </ul>
-
-            <p>The original LP tokens were burned by the SOL Incinerator to protect the original coin price.</p>
-
-            <h3>April Investments NFTs</h3>
-
-            <h4>Trillionaire Dogs (TD) & Trillionaire Cats (TC) & Trillionaire Bears (TB)</h4>
-            <p>Trillionaire Dogs, Trillionaire Cats, and Trillionaire Bears are collections of dogs, cats, and bears on the Moon. 72% APR on original USD purchase price is projected for holders. APR is based on NFT trade volume revenue (1% of trade volume) and liquidity mining profits. Monthly payments are made in DogCoin, CatCoin, or BearCoin depending on which NFT type was purchased. Each NFT collection will have a capped supply of 1,000,000,000. NFTs will be available to buy and sell fractionally.</p>
-
-            <h4>Solid Gold Token (SGT)</h4>
-            <p>127% APR on original USD purchase price is projected for holders. APR is based on a higher percentage of NFT trade volume revenue (2% of trade volume) and liquidity mining profits. Payments are made in AprilCoin, SkiCoin, DogCoin, CatCoin, BearCoin or a mix of them. Minimum investment is $25,000.</p>
-
-            <h4>April Digital Land (ADL)</h4>
-            <p>The April Metaverse will feature 1,000,000,000 plots of digital land across Earth, the Moon, and Mars. Ownership grants rights to build any digital experience, unlocking vast potential for advertisements, gaming, entertainment, and revenue generation.</p>
-
-            <h3>April Metaverse</h3>
-            <p>The April Metaverse is a VR/AR 3D digital world leveraging Unity's cutting-edge graphics for unparalleled realism. It will feature 1,000,000,000 plots of digital land across Earth, the Moon, and Mars, inhabited by animals and open to human avatars for exploration and development. Digital asset mining will be available in select areas.</p>
-            <p>The April Metaverse includes an NFT and digital asset marketplace for trading among users, alongside a comprehensive exchange offering centralized and decentralized features. Assets and cryptocurrencies can be easily traded, converted to USD, and transferred to bank accounts. Liquidity mining and asset staking will be integrated.</p>
-
-            <p>Purchase our cryptocurrencies on Jupiter, Raydium, or Birdeye DEXs. The Trillionaire Dogs NFT collection is currently available on OpenSea.</p>
-
-            <p>Follow April Investments on X @AprilCoinMeta</p>
         </section>
     </div>
     <footer>
-        <p>&copy; 2024 April Investments. All rights reserved.</p>
+        <p>April Investments © 2024</p>
     </footer>
 </body>
 </html>
+
 
