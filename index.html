@@ -22,6 +22,7 @@
             justify-content: center;
             background-color: #006600; /* Green */
             overflow: hidden;
+            flex-wrap: wrap;
         }
         nav a {
             color: white;
@@ -50,6 +51,19 @@
         section:last-child {
             border-bottom: none;
             margin-bottom: 0;
+        }
+        /* Media Query for Mobile Devices */
+        @media (max-width: 600px) {
+            header, footer {
+                padding: 10px;
+            }
+            nav a {
+                padding: 10px 5px;
+            }
+            h1, h2, h3, h4, h5 {
+                font-size: 1.2em;
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
@@ -221,3 +235,4 @@
     </footer>
 </body>
 </html>
+
