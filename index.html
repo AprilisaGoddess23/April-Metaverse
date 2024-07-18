@@ -187,6 +187,7 @@
             <div class="form-popup" id="depositForm">
                 <form class="form-container">
                     <h2>Deposit SOL</h2>
+                    <button type="button" class="btn" onclick="connectWallet()">Connect Wallet</button>
                     <label for="wallet"><b>Phantom Wallet Address</b></label>
                     <input type="text" id="wallet" placeholder="Enter Phantom Wallet Address" required>
                     <label for="amount"><b>Amount in SOL</b></label>
@@ -201,6 +202,7 @@
             <div class="form-popup" id="closeAccountForm">
                 <form class="form-container">
                     <h2>Close Account</h2>
+                    <button type="button" class="btn" onclick="connectWallet()">Connect Wallet</button>
                     <label for="percentage"><b>Select Percentage to Close</b></label>
                     <select id="percentage" required>
                         <option value="25">25%</option>
@@ -225,6 +227,8 @@
     <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
     <script>
         const APRIL_INVESTMENTS_WALLET = "DXXmtxAVkZ4orFy79kmrzB27dz7uibpdkVYWzYZzGDBz";
+        let provider = null;
+        let wallet = null;
 
         function openDepositForm() {
             document.getElementById("depositForm").style.display = "block";
@@ -242,6 +246,22 @@
             document.getElementById("closeAccountForm").style.display = "none";
         }
 
+        async function connectWallet() {
+            try {
+                provider = window.solana;
+                if (!provider) {
+                    alert("Please install the Phantom Wallet");
+                    return;
+                }
+                await provider.connect();
+                wallet = provider.publicKey;
+                alert(`Connected to wallet: ${wallet.toString()}`);
+            } catch (error) {
+                console.error("Error connecting to wallet:", error);
+                alert("There was an error connecting to your wallet. Please try again.");
+            }
+        }
+
         async function depositSol() {
             const walletAddress = document.getElementById('wallet').value;
             const amount = document.getElementById('amount').value;
@@ -252,34 +272,25 @@
                 return;
             }
 
+            if (!wallet) {
+                alert("Please connect your wallet first");
+                return;
+            }
+
             try {
-                // Connect to Phantom Wallet
-                const provider = window.solana;
-                if (!provider) {
-                    alert("Please install the Phantom Wallet");
-                    return;
-                }
-                await provider.connect();
                 const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
-                const wallet = provider.publicKey;
 
-                // Calculate amounts to transfer
                 const totalLamports = solanaWeb3.LAMPORTS_PER_SOL * amount;
-                const customerLamports = totalLamports;
 
-                // Transfer SOL to Raydium Liquidity Pool
                 let transaction = new solanaWeb3.Transaction().add(
                     solanaWeb3.SystemProgram.transfer({
                         fromPubkey: wallet,
                         toPubkey: new solanaWeb3.PublicKey(walletAddress),
-                        lamports: customerLamports
+                        lamports: totalLamports
                     })
                 );
                 let signature = await provider.signAndSendTransaction(transaction);
                 await connection.confirmTransaction(signature);
-
-                // Logic to add SOL to the SOL/DOG liquidity pool on Raydium
-                // and set up automatic weekly harvest to the specified DogCoin wallet
 
                 alert("Deposit successful! Your SOL has been deposited to the liquidity pool.");
 
@@ -299,22 +310,17 @@
                 return;
             }
 
-            try {
-                // Connect to Phantom Wallet
-                const provider = window.solana;
-                if (!provider) {
-                    alert("Please install the Phantom Wallet");
-                    return;
-                }
-                await provider.connect();
-                const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
-                const wallet = provider.publicKey;
+            if (!wallet) {
+                alert("Please connect your wallet first");
+                return;
+            }
 
-                // Placeholder logic for total account balance in lamports
+            try {
+                const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
+
                 const totalAccountLamports = 1000000; // Replace with actual logic to fetch balance
                 const percentageLamports = (totalAccountLamports * percentage) / 100;
 
-                // Withdraw SOL to customer wallet
                 let transaction = new solanaWeb3.Transaction().add(
                     solanaWeb3.SystemProgram.transfer({
                         fromPubkey: wallet,
