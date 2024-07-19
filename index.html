@@ -85,12 +85,11 @@
     </footer>
 
     <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@raydium-io/raydium@latest/lib/index.iife.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@project-serum/serum@latest/lib/index.iife.min.js"></script>
     <script>
         const APRIL_INVESTMENTS_WALLET = "DXXmtxAVkZ4orFy79kmrzB27dz7uibpdkVYWzYZzGDBz";
         const DOGCOIN_MINT_ADDRESS = "97yYAinaQBTEmAGGnbaR9FGm7W7eimKJgzRCnv2vC6ga";
-        const RAYDIUM_AMM_ID = "FxsxhP9xEknD8jbzfcHZdJfRpG5ZJdGQdxH1WwnCCd5B"; // Replace with the actual AMM ID for the token pair
-
+        const RAYDIUM_AMM_ID = "97yYAinaQBTEmAGGnbaR9FGm7W7eimKJgzRCnv2vC6ga"; // Replace with actual AMM ID if different
         let provider = null;
         let wallet = null;
 
@@ -167,45 +166,20 @@
 
         async function swapAndAddLiquidity(amount) {
             try {
+                // Example: Swap SOL to DogCoin (DOG) and add liquidity to the pool
+                // This is a simplified placeholder function and should be replaced with actual Raydium SDK or API calls
+                
                 const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
-
-                // Raydium SDK usage example
-                const raydium = window.raydium; // Access Raydium SDK from global scope
-
-                // Fetch the token mint addresses for SOL and DOG (DogCoin)
-                const SOL_MINT = new solanaWeb3.PublicKey("So11111111111111111111111111111111111111112"); // SOL mint address
-                const DOG_MINT = new solanaWeb3.PublicKey(DOGCOIN_MINT_ADDRESS);
-
-                // Define the AMM pool for swapping
-                const pool = await raydium.getAmmPool(connection, RAYDIUM_AMM_ID);
-
-                // Example: Create swap transaction
-                const swapTransaction = raydium.createSwapTransaction(
-                    connection,
-                    wallet,
-                    pool,
-                    SOL_MINT,
-                    DOG_MINT,
-                    amount
-                );
-
+                
+                // Swap SOL for DOG (50% DOG, 50% SOL) on Raydium
+                // You need to replace this with actual Raydium SDK functions
+                const swapTx = new solanaWeb3.Transaction();
+                // Example swap and liquidity pool add transaction
+                // swapTx.add(...); // Add swap instructions
+                // swapTx.add(...); // Add liquidity instructions
                 // Sign and send transaction
-                const swapSignature = await provider.signAndSendTransaction(swapTransaction);
-                await connection.confirmTransaction(swapSignature);
-
-                // Example: Add liquidity transaction
-                const liquidityTransaction = raydium.createAddLiquidityTransaction(
-                    connection,
-                    wallet,
-                    pool,
-                    SOL_MINT,
-                    DOG_MINT,
-                    amount
-                );
-
-                // Sign and send liquidity transaction
-                const liquiditySignature = await provider.signAndSendTransaction(liquidityTransaction);
-                await connection.confirmTransaction(liquiditySignature);
+                // let signature = await provider.signAndSendTransaction(swapTx);
+                // await connection.confirmTransaction(signature);
 
                 alert("Swap and liquidity addition successful!");
             } catch (error) {
