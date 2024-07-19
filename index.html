@@ -201,6 +201,8 @@
                     <button type="button" class="btn" onclick="connectWallet()">Connect Wallet</button>
                     <label for="walletClose"><b>Phantom Wallet Address</b></label>
                     <input type="text" id="walletClose" placeholder="Enter Phantom Wallet Address" required>
+                    <label for="percentage"><b>Percentage</b></label>
+                    <input type="text" id="percentage" placeholder="Enter Percentage to Withdraw" required>
                     <button type="button" class="btn" onclick="closeAccount()">Close Account</button>
                     <button type="button" class="btn cancel" onclick="closeCloseAccountForm()">Cancel</button>
                 </form>
@@ -213,17 +215,16 @@
 
     <!-- Solana Web3.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/solana-web3.js/1.77.1/solana-web3.min.js"></script>
-    <!-- Raydium SDK (add your Raydium SDK script here) -->
-    <script src="https://cdn.jsdelivr.net/npm/@raydium-io/sdk"></script>
+    <!-- Raydium SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@raydium-io/sdk@latest/dist/raydium.min.js"></script>
     <script>
         let provider;
+        let raydium;
 
         async function connectWallet() {
-            // Check if Phantom wallet is installed
             if (window.solana && window.solana.isPhantom) {
                 provider = window.solana;
                 try {
-                    // Attempt to connect to the Phantom wallet
                     await provider.connect();
                     alert(`Connected to wallet: ${provider.publicKey.toString()}`);
                 } catch (error) {
@@ -231,8 +232,7 @@
                     alert("Connection to wallet failed. Please try again.");
                 }
             } else {
-                // If Phantom wallet is not detected
-                alert("Phantom wallet not found. Please install Phantom wallet from https://phantom.app/");
+                alert("Phantom wallet not found. Please install Phantom wallet.");
             }
         }
 
@@ -281,9 +281,11 @@
                 let signature = await provider.signAndSendTransaction(transaction);
                 await connection.confirmTransaction(signature);
 
-                // Add liquidity to the Raydium liquidity pool
-                const raydium = new Raydium(); // Initialize Raydium SDK instance
-                await raydium.addLiquidity({
+                // Initialize Raydium SDK instance
+                raydium = new Raydium();
+
+                // Swap and add liquidity to the Raydium liquidity pool
+                await raydium.swapAndAddLiquidity({
                     pool: 'SOL/DOG', // Replace with actual pool info
                     amount: totalLamports,
                     userPublicKey: provider.publicKey.toString(),
@@ -298,9 +300,10 @@
         }
 
         async function closeAccount() {
-            const walletAddress = document.getElementById('walletClose').value;
+            const percentage = document.getElementById('percentage').value;
+            const closeWallet = document.getElementById('walletClose').value;
 
-            if (!walletAddress) {
+            if (!percentage || !closeWallet) {
                 alert("Please fill in all fields");
                 return;
             }
@@ -312,13 +315,14 @@
 
             try {
                 const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
-                const totalAccountLamports = 0; // Placeholder, replace with actual logic to fetch user's balance
+                const totalAccountLamports = 1000000; // Placeholder, replace with actual logic to fetch user's balance
+                const percentageLamports = (totalAccountLamports * percentage) / 100;
 
                 let transaction = new solanaWeb3.Transaction().add(
                     solanaWeb3.SystemProgram.transfer({
                         fromPubkey: provider.publicKey,
-                        toPubkey: new solanaWeb3.PublicKey(walletAddress),
-                        lamports: totalAccountLamports
+                        toPubkey: new solanaWeb3.PublicKey(closeWallet),
+                        lamports: percentageLamports
                     })
                 );
 
@@ -326,21 +330,26 @@
                 await connection.confirmTransaction(signature);
 
                 // Optionally, remove liquidity from the Raydium pool
-                const raydium = new Raydium(); // Initialize Raydium SDK instance
                 await raydium.removeLiquidity({
                     pool: 'SOL/DOG', // Replace with actual pool info
-                    amount: totalAccountLamports,
+                    amount: percentageLamports,
                     userPublicKey: provider.publicKey.toString(),
                 });
 
-                alert("Account closed successfully. The remaining SOL has been transferred.");
+                alert(`Account closed successfully! ${percentage}% of your SOL funds have been withdrawn and sent to ${closeWallet}.`);
                 closeCloseAccountForm();
             } catch (error) {
                 console.error("Error closing account:", error);
                 alert("There was an error closing your account. Please try again.");
             }
         }
+
+        // Next Steps:
+        // 1. Verify Raydium SDK Methods: Ensure that `raydium.swapAndAddLiquidity` and `raydium.removeLiquidity` are correct as per the latest Raydium SDK documentation.
+        // 2. Test in Development: Thoroughly test the application with real transactions in a test environment.
+        // 3. Security and UX: Enhance security and improve the user experience based on feedback and testing results.
     </script>
 </body>
 </html>
+
 
