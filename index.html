@@ -204,7 +204,7 @@
 
             <button class="connect-wallet-btn" onclick="connectWallet()">Connect Wallet</button>
 
-            <!-- Deposit Form -->
+            <!-- Deposit SOL Form -->
             <button class="open-button" onclick="openForm('depositForm')">Deposit SOL</button>
             <div class="form-popup" id="depositForm">
                 <form class="form-container" id="depositFormContent">
@@ -348,13 +348,20 @@
                 return;
             }
 
-            // Mock example for fetching balance and interest (replace with actual implementation)
-            const balanceInSOL = 10; // Example balance in SOL
+            // Retrieve wallet balance
+            const walletPublicKey = provider.publicKey.toString();
+            const balance = await connection.getBalance(provider.publicKey);
+            const balanceInSOL = balance / 1e9; // Convert lamports to SOL
+
+            // Example USD conversion (replace with actual conversion logic)
             const balanceInUSD = balanceInSOL * 20; // Example conversion rate
+
+            // Example pending DogCoin interest (replace with actual data)
             const pendingInterest = 50; // Example pending interest in DogCoin
 
-            document.getElementById('balanceInSOL').innerText = `Balance in SOL: ${balanceInSOL}`;
-            document.getElementById('balanceInUSD').innerText = `Balance in USD: $${balanceInUSD}`;
+            // Update form fields
+            document.getElementById('balanceInSOL').innerText = `Balance in SOL: ${balanceInSOL.toFixed(2)}`;
+            document.getElementById('balanceInUSD').innerText = `Balance in USD: $${balanceInUSD.toFixed(2)}`;
             document.getElementById('pendingInterest').innerText = `Pending DogCoin Interest: ${pendingInterest} DOG`;
 
             openForm('balanceAndInterestForm');
