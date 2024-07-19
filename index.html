@@ -115,6 +115,12 @@
         .connect-wallet-btn:hover {
             opacity: 1;
         }
+        .close-amount-options {
+            margin-bottom: 15px;
+        }
+        .close-amount-options label {
+            margin-right: 10px;
+        }
         /* Media Query for Mobile Devices */
         @media (max-width: 600px) {
             header, footer {
@@ -218,7 +224,12 @@
                 <form class="form-container" id="closeAccountFormContent">
                     <h3>Close Account</h3>
                     <label for="closeAmount">Amount to Withdraw:</label>
-                    <input type="text" id="closeAmount" placeholder="Amount in SOL" required>
+                    <div class="close-amount-options">
+                        <label><input type="radio" name="closePercentage" value="25" checked> 25%</label>
+                        <label><input type="radio" name="closePercentage" value="50"> 50%</label>
+                        <label><input type="radio" name="closePercentage" value="75"> 75%</label>
+                        <label><input type="radio" name="closePercentage" value="100"> 100%</label>
+                    </div>
                     <button type="button" class="btn" onclick="closeAccount()">Close Account</button>
                     <button type="button" class="btn cancel" onclick="closeForm('closeAccountForm')">Close</button>
                 </form>
@@ -287,10 +298,15 @@
                 alert('Please connect your wallet first');
                 return;
             }
-            const amount = document.getElementById('closeAmount').value;
+            const percentage = document.querySelector('input[name="closePercentage"]:checked').value;
+            
+            // Retrieve the total amount deposited (mock example)
+            // You need to fetch this from your storage or smart contract
+            const totalDeposited = 100; // Example total deposited in SOL
+            const amountToWithdraw = (totalDeposited * percentage) / 100;
 
             // Convert amount to lamports (Solana's smallest unit)
-            const lamports = amount * 1e9; // 1 SOL = 1e9 lamports
+            const lamports = amountToWithdraw * 1e9; // 1 SOL = 1e9 lamports
 
             const transaction = new Transaction().add(
                 SystemProgram.transfer({
@@ -324,5 +340,4 @@
     </script>
 </body>
 </html>
-
 
