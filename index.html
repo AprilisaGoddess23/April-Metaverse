@@ -74,14 +74,14 @@
             padding: 10px;
             background-color: white;
         }
-        .form-container input[type=text], .form-container input[type=password] {
+        .form-container input[type=text], .form-container input[type=password], .form-container input[type=number] {
             width: 100%;
             padding: 15px;
             margin: 5px 0 22px 0;
             border: none;
             background: #f1f1f1;
         }
-        .form-container input[type=text]:focus, .form-container input[type=password]:focus {
+        .form-container input[type=text]:focus, .form-container input[type=password]:focus, .form-container input[type=number]:focus {
             background-color: #ddd;
             outline: none;
         }
@@ -121,6 +121,14 @@
         .close-amount-options label {
             margin-right: 10px;
         }
+        #transactionStatus {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        #balanceStatus {
+            margin-top: 10px;
+            font-weight: bold;
+        }
         /* Media Query for Mobile Devices */
         @media (max-width: 600px) {
             header, footer {
@@ -142,78 +150,24 @@
     </header>
     <nav>
         <a href="#home">Home</a>
-        <a href="#products">Products</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
-        <a href="#whitepaper">Whitepaper</a>
-        <a href="#april-savings-account">April Savings Account</a>
     </nav>
     <div class="container">
-        <section id="home">
-            <h2>Welcome to April Investments</h2>
-            <p>Your trusted partner in financial growth and security.</p>
-        </section>
-        <section id="products">
-            <h2>Our Products</h2>
-            <p>We offer the perfect range of investment options tailored to meet your needs.</p>
-        </section>
-        <section id="about">
-            <h2>About April Investments</h2>
-            <p>April Investments is shaping the future of finance with a commitment to integrity and customer-centricity. We prioritize your long-term gains with minimal volatility, backed by over $82 billion in managed assets.</p>
-            <p>We offer the best crypto investment opportunities and products, meticulously designed for both short-term and long-term gains with low levels of negative volatility. Our products are characterized by safety, effective marketing, and meticulous management.</p>
-            <p>Established in 1990, April Investments has earned a reputation for trustworthiness and reliability in financial services and technology.</p>
-        </section>
-        <section id="contact">
-            <h2>Contact Us</h2>
-            <p>Email us at josh@april-investments.com</p>
-        </section>
-        <section id="whitepaper">
-            <h2>April Investments Whitepaper</h2>
-            <p>April Investments is the investment firm of the future. We pride ourselves on integrity and doing the right thing for our customers. We look out for the best interests of our customers and focus on achieving long-term gains with minimal negative volatility.</p>
-            <p>April Investments offers a variety of crypto investment opportunities designed to deliver both short-term and long-term gains while maintaining very low levels of risk. Our products are safe, well-marketed, and backed by over $82 billion in assets under management.</p>
+        <section id="cryptoSavings">
+            <h2>Crypto Savings Account</h2>
 
-            <h3>Cryptocurrency</h3>
-
-            <h4><span class="smaller-bold">DogCoin (DOG)</span></h4>
-            <p>DogCoin is an SPL token built on the Solana blockchain and serves as a global currency and investment vehicle.</p>
-
-            <h5><span class="smaller-bold">Tokenomics:</span></h5>
-            <ul>
-                <li>Total Supply: 27,000,000,000,000</li>
-                <li>Max Supply: 27,000,000,000,000</li>
-                <li>Supply is capped at 27,000,000,000,000 coins</li>
-            </ul>
-
-            <h5><span class="smaller-bold">Token Distribution:</span></h5>
-            <ul>
-                <li>70% to original SOL/DOG liquidity pool on Raydium. Original coin price was set at 0.72 SOL for 18,900,000,000,000 coins. Original LP tokens were burned by the SOL Incinerator to protect the original coin price.</li>
-                <li>20% to Marketing.</li>
-                <li>10% to Founder.</li>
-            </ul>
-
-            <p>DogCoin aims to be a leading currency and investment vehicle globally, offering a safe haven for crypto investors through our commitment to product integrity and service excellence.</p>
-
-            <p>DogCoin offers the fastest and least expensive transfers of any cryptocurrency or fiat currency. It serves as both a currency and investment and offers higher levels of potential gains and liquidity than any other investment including stocks, bonds, mutual funds, annuities, high interest savings accounts, and real estate. DogCoin is the safest and most superior investment currently available on the open market.</p>
-
-            <p>April Investments' CEO Josh Zielinski bought about 83.4% of the DogCoin supply early on and pledges to never sell any of these coins. This will help to stabilize the price, reduce downward volatility, and keep the price moving onward and upward.</p>
-            <p>Buy DogCoin on the Jupiter DEX.</p>
-        </section>
-        <section id="april-savings-account">
-            <h2>April Savings Account</h2>
-            <p>The April Savings Account pays the investor 50% APR on deposit value. Deposits are made in SOL and invested in the SOL-DOG liquidity mine. The 50% APR is generated by trade fees between Solana and DogCoin. Interest payments are made every 7 days in DogCoin for as long as your deposit is held by April Investments. Initial deposit amount is guaranteed in SOL and can be reclaimed at any time. The April Savings Account generates 3X the returns of traditional high interest savings accounts and annuities combined.</p>
-
-            <p>Click the connect wallet button below to connect to your Solana wallet. Once connected click the Deposit SOL button to open an account. To close an account simply click the Close Account button and choose the percentage of your account you'd like to close.</p>
-            
+            <!-- Connect Wallet Button -->
             <button class="connect-wallet-btn" onclick="connectWallet()">Connect Wallet</button>
 
-            <!-- Deposit Form -->
+            <!-- Deposit SOL Form -->
             <button class="open-button" onclick="openForm('depositForm')">Deposit SOL</button>
             <div class="form-popup" id="depositForm">
                 <form class="form-container" id="depositFormContent">
                     <h3>Deposit SOL</h3>
                     <label for="depositAmount">Amount to Deposit:</label>
-                    <input type="text" id="depositAmount" placeholder="Amount in SOL" required>
-                    <label for="dogCoinAddress">DogCoin Address for Yield:</label>
+                    <input type="number" id="depositAmount" placeholder="Amount in SOL" required min="0.01">
+                    <label for="dogCoinAddress">DogCoin Address for Daily Interest:</label>
                     <input type="text" id="dogCoinAddress" placeholder="Your DogCoin Wallet Address" required>
                     <button type="button" class="btn" onclick="depositSOL()">Deposit</button>
                     <button type="button" class="btn cancel" onclick="closeForm('depositForm')">Close</button>
@@ -236,6 +190,13 @@
                     <button type="button" class="btn cancel" onclick="closeForm('closeAccountForm')">Close</button>
                 </form>
             </div>
+
+            <!-- Display Balance Button -->
+            <button class="open-button" onclick="displayBalance()">Display Balance and Interest</button>
+            <div id="balanceStatus"></div>
+
+            <!-- Transaction Status -->
+            <div id="transactionStatus"></div>
         </section>
     </div>
     <footer>
@@ -244,21 +205,21 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.30.0/dist/web3.min.js"></script>
     <script>
-        // Initialize Solana and Phantom wallet
         const { Connection, PublicKey, clusterApiUrl, SystemProgram, Transaction } = solanaWeb3;
         const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
         let provider = window.solana;
 
         async function connectWallet() {
-            if (window.solana && window.solana.isPhantom) {
-                try {
+            try {
+                if (window.solana && window.solana.isPhantom) {
                     const response = await window.solana.connect();
                     console.log('Connected to wallet:', response.publicKey.toString());
-                } catch (err) {
-                    console.error('Failed to connect wallet:', err);
+                } else {
+                    alert('Please install a Solana wallet extension like Phantom.');
                 }
-            } else {
-                alert('Phantom wallet not detected');
+            } catch (err) {
+                console.error('Wallet connection failed:', err);
+                alert('Wallet connection failed');
             }
         }
 
@@ -269,9 +230,9 @@
             }
             const amount = document.getElementById('depositAmount').value;
             const dogCoinAddress = document.getElementById('dogCoinAddress').value;
-            
-            // Convert amount to lamports (Solana's smallest unit)
-            const lamports = amount * 1e9; // 1 SOL = 1e9 lamports
+
+            // Convert amount to lamports
+            const lamports = amount * 1e9;
 
             const transaction = new Transaction().add(
                 SystemProgram.transfer({
@@ -283,15 +244,12 @@
 
             try {
                 const signature = await provider.sendTransaction(transaction, connection);
-                console.log('Transaction sent:', signature);
-
-                // You would also need to call Raydium's smart contract or API here
-                // to handle liquidity pool interactions and yield tracking.
-
-                alert('Deposit successful');
+                console.log('Deposit transaction sent:', signature);
+                updateTransactionStatus('Deposit successful');
+                // Call Raydium API/smart contract to handle yield distribution
             } catch (err) {
                 console.error('Deposit failed:', err);
-                alert('Deposit failed');
+                updateTransactionStatus('Deposit failed');
             }
         }
 
@@ -301,14 +259,11 @@
                 return;
             }
             const percentage = document.querySelector('input[name="closePercentage"]:checked').value;
-            
-            // Retrieve the total amount deposited (mock example)
-            // You need to fetch this from your storage or smart contract
-            const totalDeposited = 100; // Example total deposited in SOL
-            const amountToWithdraw = (totalDeposited * percentage) / 100;
+            const totalBalance = 100; // Replace with actual logic to fetch balance
+            const amountToWithdraw = (totalBalance * percentage) / 100;
 
-            // Convert amount to lamports (Solana's smallest unit)
-            const lamports = amountToWithdraw * 1e9; // 1 SOL = 1e9 lamports
+            // Convert amount to lamports
+            const lamports = amountToWithdraw * 1e9;
 
             const transaction = new Transaction().add(
                 SystemProgram.transfer({
@@ -320,15 +275,29 @@
 
             try {
                 const signature = await provider.sendTransaction(transaction, connection);
-                console.log('Transaction sent:', signature);
-
-                // You would also need to call Raydium's smart contract or API here
-                // to handle liquidity pool interactions and yield withdrawal.
-
-                alert('Account closed successfully');
+                console.log('Withdrawal transaction sent:', signature);
+                updateTransactionStatus('Account closed successfully');
+                // Call Raydium API/smart contract to handle yield withdrawal
             } catch (err) {
                 console.error('Account closing failed:', err);
-                alert('Account closing failed');
+                updateTransactionStatus('Account closing failed');
+            }
+        }
+
+        async function displayBalance() {
+            if (!provider || !provider.isPhantom) {
+                alert('Please connect your wallet first');
+                return;
+            }
+            try {
+                const balance = await connection.getBalance(provider.publicKey);
+                const usdValue = (balance / 1e9) * 150; // Assume 1 SOL = $150
+                const dogCoinInterest = 50; // Replace with actual logic to fetch DogCoin interest
+                const balanceText = `SOL Balance: ${(balance / 1e9).toFixed(2)} SOL ($${usdValue.toFixed(2)})\nDogCoin Interest: ${dogCoinInterest} DOG`;
+                updateBalanceStatus(balanceText);
+            } catch (err) {
+                console.error('Failed to fetch balance:', err);
+                updateBalanceStatus('Failed to fetch balance');
             }
         }
 
@@ -339,8 +308,15 @@
         function closeForm(formId) {
             document.getElementById(formId).style.display = 'none';
         }
+
+        function updateTransactionStatus(status) {
+            document.getElementById('transactionStatus').innerText = status;
+        }
+
+        function updateBalanceStatus(status) {
+            document.getElementById('balanceStatus').innerText = status;
+        }
     </script>
 </body>
 </html>
-
 
