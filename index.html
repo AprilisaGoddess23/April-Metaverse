@@ -198,6 +198,9 @@
             <h4><span class="smaller-bold">DogCoin (DOG)</span></h4>
             <p>DogCoin is an SPL token built on the Solana blockchain and serves as a global currency and investment vehicle.</p>
 
+            <h4><span class="smaller-bold">AprilCoin (APRIL)</span></h4>
+            <p>AprilCoin is an SPL token built on the Solana blockchain and serves as an alternative global currency and investment vehicle.</p>
+
             <h5><span class="smaller-bold">Tokenomics:</span></h5>
             <ul>
                 <li>Total Supply: 27,000,000,000,000</li>
@@ -212,17 +215,16 @@
                 <li>10% to Founder.</li>
             </ul>
 
-            <p>DogCoin aims to be a leading currency and investment vehicle globally, offering a safe haven for crypto investors through our commitment to product integrity and service excellence.</p>
+            <p>AprilCoin aims to be a leading currency and investment vehicle globally, offering a safe haven for crypto investors through our commitment to product integrity and service excellence.</p>
 
-            <p>DogCoin offers the fastest and least expensive transfers of any cryptocurrency or fiat currency. It serves as both a currency and investment and offers higher levels of potential gains and liquidity than any other investment including stocks, bonds, mutual funds, annuities, high interest savings accounts, and real estate. DogCoin is the safest and most superior investment currently available on the open market.</p>
+            <p>AprilCoin offers the fastest and least expensive transfers of any cryptocurrency or fiat currency. It serves as both a currency and investment and offers higher levels of potential gains and liquidity than any other investment including stocks, bonds, mutual funds, annuities, high interest savings accounts, and real estate. AprilCoin is the safest and most superior investment currently available on the open market.</p>
 
-            <p>April Investments' CEO Josh Zielinski bought about 83.4% of the DogCoin supply early on and pledges to never sell any of these coins. This will help to stabilize the price, reduce downward volatility, and keep the price moving onward and upward.</p>
-            <p>Buy DogCoin on the Jupiter DEX.</p>
+            <p>April Investments' CEO Josh Zielinski bought about 83.4% of the AprilCoin supply early on and pledges to never sell any of these coins. This will help to stabilize the price, reduce downward volatility, and keep the price moving onward and upward.</p>
+            <p>Buy AprilCoin on the Jupiter DEX.</p>
         </section>
         <section id="april-savings-account">
             <h2>April Savings Account</h2>
-            <p>The April Savings Account pays the investor 20% APR on deposit value. Deposits are in SOL and can be withdrawn at any time. Daily interest payments are made in DogCoin, with the interest rate equivalent to the APR divided by 365. Interest is also paid on the DogCoin daily balances in the savings account. The initial deposit amount is guaranteed and can be reclaimed at any time. The April Savings Account generates 3X the returns of traditional high interest savings accounts and annuities combined.</p>
-            <p>To set up an account, click the Connect Wallet button to connect your wallet to the April Savings Account. Then, click the Deposit SOL button to make your deposit and start earning 20% APR in DogCoin. You can display your account and interest balances by clicking the Display Balance and Interest button while connected to your wallet. If you'd like to close your account and reclaim your deposits, you can do so by clicking the Close Account button and selecting what percentage of your account you'd like to close.</p>
+            <p>The April Savings Account is a smart investment product that allows users to earn daily interest on their cryptocurrency deposits. The principal deposits are in SOL and can be withdrawn at any time. Daily interest payments are made in DogCoin and AprilCoin, with the interest rate equivalent to the APR divided by 365. Interest is also paid on the DogCoin and AprilCoin daily balances in the savings account. The initial deposit amount is guaranteed and can be reclaimed at any time. The April Savings Account generates 3X the returns of traditional high interest savings accounts and annuities combined.</p>
 
             <div class="button-container">
                 <button class="connect-wallet-btn" onclick="connectWallet()">Connect Wallet</button>
@@ -237,8 +239,8 @@
                     <h3>Deposit SOL</h3>
                     <label for="depositAmount">Amount to Deposit:</label>
                     <input type="text" id="depositAmount" placeholder="Amount in SOL" required>
-                    <label for="dogCoinAddress">DogCoin Address for Daily Interest:</label>
-                    <input type="text" id="dogCoinAddress" placeholder="Your DogCoin Wallet Address" required>
+                    <label for="interestAddress">Address for Daily Interest (DogCoin or AprilCoin):</label>
+                    <input type="text" id="interestAddress" placeholder="Your DogCoin or AprilCoin Wallet Address" required>
                     <button type="button" class="btn" onclick="depositSOL()">Deposit</button>
                     <button type="button" class="btn cancel" onclick="closeForm('depositForm')">Close</button>
                 </form>
@@ -252,6 +254,7 @@
                         <p><strong>Balance in SOL:</strong> <span id="solBalance">Loading...</span></p>
                         <p><strong>Balance in USD:</strong> <span id="usdBalance">Loading...</span></p>
                         <p><strong>Pending DogCoin Interest:</strong> <span id="dogCoinInterest">Loading...</span></p>
+                        <p><strong>Pending AprilCoin Interest:</strong> <span id="aprilCoinInterest">Loading...</span></p>
                     </div>
                     <button type="button" class="btn cancel" onclick="closeForm('displayBalanceForm')">Close</button>
                 </form>
@@ -304,7 +307,7 @@
                 return;
             }
             const amount = document.getElementById('depositAmount').value;
-            const dogCoinAddress = document.getElementById('dogCoinAddress').value;
+            const interestAddress = document.getElementById('interestAddress').value;
             
             // Convert amount to lamports (Solana's smallest unit)
             const lamports = amount * 1e9; // 1 SOL = 1e9 lamports
@@ -378,10 +381,12 @@
             const solBalance = 10; // Example balance in SOL
             const usdBalance = solBalance * 20; // Example conversion rate
             const dogCoinInterest = 5; // Example pending interest in DogCoin
+            const aprilCoinInterest = 3; // Example pending interest in AprilCoin
 
             document.getElementById('solBalance').innerText = solBalance + ' SOL';
             document.getElementById('usdBalance').innerText = '$' + usdBalance.toFixed(2);
             document.getElementById('dogCoinInterest').innerText = dogCoinInterest + ' DOG';
+            document.getElementById('aprilCoinInterest').innerText = aprilCoinInterest + ' APRIL';
         }
 
         function openForm(formId) {
