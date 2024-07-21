@@ -334,6 +334,7 @@
                 // Fetch balances and interests
                 const solBalance = await getBalance(publicKey);
                 const usdBalance = solBalance * 25; // Placeholder conversion rate, 1 SOL = 25 USD
+                
                 const dogInterest = await getInterest(publicKey, "DOG");
                 const skiInterest = await getInterest(publicKey, "SKI");
                 const aprilInterest = await getInterest(publicKey, "APRIL");
