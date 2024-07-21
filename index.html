@@ -197,23 +197,6 @@
 
             <h3>Cryptocurrency</h3>
 
-            <h4><span class="smaller-bold">AprilCoin (APRIL)</span></h4>
-            <p>AprilCoin is an SPL token built on the Solana blockchain and serves as a global currency, the official April Metaverse currency, and investment vehicle.</p>
-
-            <h5><span class="smaller-bold">Tokenomics:</span></h5>
-            <ul>
-                <li>Total Supply: 1,000,000,000</li>
-                <li>Max Supply: 1,000,000,000</li>
-                <li>Supply is capped at 1,000,000,000 coins</li>
-            </ul>
-            
-            <h5><span class="smaller-bold">Token Distribution:</span></h5>
-            <ul>
-                <li>70% to original SOL/APRIL liquidity pool on Raydium. Original coin price was set at 1.027 SOL for 700,000,000 coins. Original LP tokens were burned by the SOL Incinerator to protect the original coin price.</li>
-                <li>20% to Marketing.</li>
-                <li>10% to Founder.</li>
-            </ul>
-            
             <h4><span class="smaller-bold">DogCoin (DOG)</span></h4>
             <p>DogCoin is an SPL token built on the Solana blockchain and serves as a global currency, April Metaverse currency, and investment vehicle.</p>
 
@@ -234,8 +217,8 @@
 
             <p>AprilCoin and DogCoin offer the fastest and least expensive transfers of any cryptocurrency or fiat currency. They serve as both a currency and investment and offer higher levels of potential gains and liquidity than any other investment including stocks, bonds, mutual funds, annuities, high interest savings accounts, and real estate. AprilCoin and DogCoin are the safest and most superior investments currently available on the market.</p>
 
-            <p>April Investments' CEO Josh Zielinski bought about 83.4% of the AprilCoin and DogCoin supplies early on and pledges to never sell any of these coins. This will help to stabilize the price, reduce downward volatility, and keep the price moving onward and upward.</p>
-            <p>Buy AprilCoin and DogCoin on the Jupiter DEX.</p>
+            <p>April Investments' CEO Josh Zielinski bought about 83.4% of the DogCoin supply early on and pledges to never sell any of these coins. This will help to stabilize the price, reduce downward volatility, and keep the price moving onward and upward.</p>
+            <p>Buy DogCoin on the Jupiter DEX.</p>
             </section>
             <section id="april-metaverse">
             <h2>April Metaverse</h2>
@@ -244,7 +227,7 @@
         <section id="april-savings-account">
             <h2>April Savings Account</h2>
             <p>Earn rewards by holding your tokens with us.</p>
-            <p>Earn an interest rate of 8.31% APR with the flexibility to withdraw your funds anytime without penalty. Interest is paid in APRIL and DOG.</p>
+            <p>Earn an interest rate of 8.31% APR with the flexibility to withdraw your funds anytime without penalty. Interest is paid in DOG.</p>
             <div class="button-container">
                 <button class="connect-wallet-btn" onclick="connectWallet()">Connect Wallet</button>
                 <button class="btn" onclick="openForm('depositForm')">Deposit SOL</button>
@@ -336,13 +319,11 @@
                 const solBalance = await getBalance(publicKey);
                 const usdBalance = solBalance * 25; // Placeholder conversion rate, 1 SOL = 25 USD
                 const dogInterest = await getInterest(publicKey, "DOG");
-                const aprilInterest = await getInterest(publicKey, "APRIL");
 
                 document.getElementById("balanceDisplay").innerText = `
                     SOL Balance: ${solBalance} SOL
                     USD Balance: ${usdBalance} USD
                     
-                    Pending AprilCoin Interest: ${aprilInterest} APRIL
                     Pending DogCoin Interest: ${dogInterest} DOG
                 `;
                 openForm('balanceForm');
@@ -385,8 +366,6 @@
             // Fetch the interest for the specified token
             if (token === "DOG") {
                 return 1000; // Placeholder value
-            } else if (token === "APRIL") {
-                return 300; // Placeholder value
             }
             return 0;
         }
