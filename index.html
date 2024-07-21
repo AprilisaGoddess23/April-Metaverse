@@ -228,28 +228,12 @@
                 <li>20% to Marketing.</li>
                 <li>10% to Founder.</li>
             </ul>
-
-            <h4><span class="smaller-bold">SkiCoin (SKI)</span></h4>
-            <p>SkiCoin is an SPL token built on the Solana blockchain and serves as a global currency and investment vehicle.</p>
-
-            <h5><span class="smaller-bold">Tokenomics:</span></h5>
-            <ul>
-                <li>Total Supply: 10,000,000,000</li>
-                <li>Max Supply: 10,000,000,000</li>
-                <li>Supply is capped at 10,000,000,000 coins</li>
-            </ul>
             
-            <h5><span class="smaller-bold">Token Distribution:</span></h5>
-            <ul>
-                <li>70% to original SOL/SKI liquidity pool on Raydium. Original coin price was set at 0.50 SOL for 3,500,000,000 coins. Original LP tokens were burned by the SOL Incinerator to protect the original coin price.</li>
-                <li>20% to Marketing.</li>
-                <li>10% to Founder.</li>
-            </ul>
         </section>
         <section id="april-savings-account">
             <h2>April Savings Account</h2>
             <p>Earn rewards by holding your tokens with us.</p>
-            <p>Earn an interest rate of 7.5% APR with the flexibility to withdraw your funds anytime without penalty. Interest is paid in APRIL, DOG, and SKI.</p>
+            <p>Earn an interest rate of 7.5% APR with the flexibility to withdraw your funds anytime without penalty. Interest is paid in APRIL and DOG.</p>
             <div class="button-container">
                 <button class="connect-wallet-btn" onclick="connectWallet()">Connect Wallet</button>
                 <button class="btn" onclick="openForm('depositForm')">Deposit SOL</button>
@@ -341,7 +325,6 @@
                 const solBalance = await getBalance(publicKey);
                 const usdBalance = solBalance * 25; // Placeholder conversion rate, 1 SOL = 25 USD
                 const dogInterest = await getInterest(publicKey, "DOG");
-                const skiInterest = await getInterest(publicKey, "SKI");
                 const aprilInterest = await getInterest(publicKey, "APRIL");
 
                 document.getElementById("balanceDisplay").innerText = `
@@ -350,7 +333,6 @@
                     
                     Pending AprilCoin Interest: ${aprilInterest} APRIL
                     Pending DogCoin Interest: ${dogInterest} DOG
-                    Pending SkiCoin Interest: ${skiInterest} SKI
                 `;
                 openForm('balanceForm');
             } catch (err) {
@@ -392,8 +374,6 @@
             // Fetch the interest for the specified token
             if (token === "DOG") {
                 return 1000; // Placeholder value
-            } else if (token === "SKI") {
-                return 500; // Placeholder value
             } else if (token === "APRIL") {
                 return 300; // Placeholder value
             }
