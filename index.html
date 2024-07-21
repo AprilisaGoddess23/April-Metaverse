@@ -285,10 +285,16 @@
             <h2>Close Account</h2>
             <div class="close-amount-options">
                 <label>
-                    <input type="radio" name="close-amount-option" value="half"> Withdraw half
+                    <input type="radio" name="close-amount-option" value="half"> 25%
                 </label>
                 <label>
-                    <input type="radio" name="close-amount-option" value="all"> Withdraw all
+                    <input type="radio" name="close-amount-option" value="all"> 50%
+                </label>
+                <label>
+                    <input type="radio" name="close-amount-option" value="half"> 75%
+                </label>
+                <label>
+                    <input type="radio" name="close-amount-option" value="all"> 100%
                 </label>
             </div>
             <button type="button" class="btn" onclick="closeAccount()">Close Account</button>
@@ -334,7 +340,6 @@
                 // Fetch balances and interests
                 const solBalance = await getBalance(publicKey);
                 const usdBalance = solBalance * 25; // Placeholder conversion rate, 1 SOL = 25 USD
-                
                 const dogInterest = await getInterest(publicKey, "DOG");
                 const skiInterest = await getInterest(publicKey, "SKI");
                 const aprilInterest = await getInterest(publicKey, "APRIL");
@@ -342,6 +347,7 @@
                 document.getElementById("balanceDisplay").innerText = `
                     SOL Balance: ${solBalance} SOL
                     USD Balance: ${usdBalance} USD
+                    
                     Pending AprilCoin Interest: ${aprilInterest} APRIL
                     Pending DogCoin Interest: ${dogInterest} DOG
                     Pending SkiCoin Interest: ${skiInterest} SKI
