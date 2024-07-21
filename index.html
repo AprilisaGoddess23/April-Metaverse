@@ -221,30 +221,55 @@
         </section>
         <section id="april-savings-account">
             <h2>April Savings Account</h2>
-            <p>The April Savings Account pays the investor 20% APR on deposit value. Deposits are in SOL and can be withdrawn at any time. Daily interest payments are made in DogCoin, with the interest rate equivalent to the APR divided by 365. Interest is calculated on a daily basis.</p>
-
-            <button class="connect-wallet-btn" onclick="connectWallet()">Connect Wallet</button>
+            <p>The April Savings Account pays the investor 20% APR on deposit value. Deposits are in SOL and can be withdrawn at any time. Daily interest payments are made in DogCoin, with the interest rate equivalent to the APR divided by 365. Interest is also paid on the DogCoin daily balances in the savings account. The initial deposit amount is guaranteed and can be reclaimed at any time. The April Savings Account generates 3X the returns of traditional high interest savings accounts and annuities combined.</p>
+            <p>To set up an account, click the Connect Wallet button to connect your wallet to the April Savings Account. Then, click the Deposit SOL button to make your deposit and start earning 20% APR in DogCoin. You can display your account and interest balances by clicking the Display Balance and Interest button while connected to your wallet. If you'd like to close your account and reclaim your deposits, you can do so by clicking the Close Account button and selecting what percentage of your account you'd like to close.</p>
 
             <div class="button-container">
-                <button class="btn" onclick="depositSOL()">Deposit SOL</button>
-                <button class="btn" onclick="closeAccount()">Close Account</button>
-                <button class="btn" onclick="openDisplayBalanceForm()">Display Balance and Interest</button>
+                <button class="connect-wallet-btn" onclick="connectWallet()">Connect Wallet</button>
+                <button class="open-button" onclick="openForm('depositForm')">Deposit SOL</button>
+                <button class="open-button" onclick="openForm('displayBalanceForm')">Display Balance and Interest</button>
+                <button class="open-button" onclick="openForm('closeAccountForm')">Close Account</button>
             </div>
 
-            <!-- Popup form for Display Balance and Interest -->
-            <div class="form-popup" id="displayBalanceForm">
-                <form class="form-container">
-                    <h3>Account Balance and Interest</h3>
-                    <label for="sol-balance"><b>SOL Balance</b></label>
-                    <input type="text" id="sol-balance" name="sol-balance" readonly>
-                    
-                    <label for="usd-balance"><b>USD Balance</b></label>
-                    <input type="text" id="usd-balance" name="usd-balance" readonly>
-                    
-                    <label for="dog-interest"><b>Pending DogCoin Interest</b></label>
-                    <input type="text" id="dog-interest" name="dog-interest" readonly>
+            <!-- Deposit Form -->
+            <div class="form-popup" id="depositForm">
+                <form class="form-container" id="depositFormContent">
+                    <h3>Deposit SOL</h3>
+                    <label for="depositAmount">Amount to Deposit:</label>
+                    <input type="text" id="depositAmount" placeholder="Amount in SOL" required>
+                    <label for="dogCoinAddress">DogCoin Address for Daily Interest:</label>
+                    <input type="text" id="dogCoinAddress" placeholder="Your DogCoin Wallet Address" required>
+                    <button type="button" class="btn" onclick="depositSOL()">Deposit</button>
+                    <button type="button" class="btn cancel" onclick="closeForm('depositForm')">Close</button>
+                </form>
+            </div>
 
-                    <button type="button" class="btn cancel" onclick="closeDisplayBalanceForm()">Close</button>
+            <!-- Display Balance and Interest Form -->
+            <div class="form-popup" id="displayBalanceForm">
+                <form class="form-container" id="displayBalanceFormContent">
+                    <h3>Account Balance and Interest</h3>
+                    <div id="balanceInfo">
+                        <p><strong>Balance in SOL:</strong> <span id="solBalance">Loading...</span></p>
+                        <p><strong>Balance in USD:</strong> <span id="usdBalance">Loading...</span></p>
+                        <p><strong>Pending DogCoin Interest:</strong> <span id="dogCoinInterest">Loading...</span></p>
+                    </div>
+                    <button type="button" class="btn cancel" onclick="closeForm('displayBalanceForm')">Close</button>
+                </form>
+            </div>
+
+            <!-- Close Account Form -->
+            <div class="form-popup" id="closeAccountForm">
+                <form class="form-container" id="closeAccountFormContent">
+                    <h3>Close Account</h3>
+                    <label for="closeAmount">Amount to Withdraw:</label>
+                    <div class="close-amount-options">
+                        <label><input type="radio" name="closePercentage" value="25" checked> 25%</label>
+                        <label><input type="radio" name="closePercentage" value="50"> 50%</label>
+                        <label><input type="radio" name="closePercentage" value="75"> 75%</label>
+                        <label><input type="radio" name="closePercentage" value="100"> 100%</label>
+                    </div>
+                    <button type="button" class="btn" onclick="closeAccount()">Close Account</button>
+                    <button type="button" class="btn cancel" onclick="closeForm('closeAccountForm')">Close</button>
                 </form>
             </div>
         </section>
@@ -253,30 +278,122 @@
         <p>&copy; 2024 April Investments. All rights reserved.</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.30.0/dist/web3.min.js"></script>
     <script>
-        function connectWallet() {
-            alert('Connecting wallet...');
-            // Implement wallet connection logic here
+        // Initialize Solana and Phantom wallet
+        const { Connection, PublicKey, clusterApiUrl, SystemProgram, Transaction } = solanaWeb3;
+        const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
+        let provider = window.solana;
+
+        async function connectWallet() {
+            if (window.solana && window.solana.isPhantom) {
+                try {
+                    const response = await window.solana.connect();
+                    console.log('Connected to wallet:', response.publicKey.toString());
+                } catch (err) {
+                    console.error('Failed to connect wallet:', err);
+                }
+            } else {
+                alert('Phantom wallet not detected');
+            }
         }
 
-        function depositSOL() {
-            alert('Deposit SOL clicked');
-            // Implement deposit SOL logic here
+        async function depositSOL() {
+            if (!provider || !provider.isPhantom) {
+                alert('Please connect your wallet first');
+                return;
+            }
+            const amount = document.getElementById('depositAmount').value;
+            const dogCoinAddress = document.getElementById('dogCoinAddress').value;
+            
+            // Convert amount to lamports (Solana's smallest unit)
+            const lamports = amount * 1e9; // 1 SOL = 1e9 lamports
+
+            const transaction = new Transaction().add(
+                SystemProgram.transfer({
+                    fromPubkey: provider.publicKey,
+                    toPubkey: new PublicKey('Raydium_Liquidity_Pool_Address'), // Replace with actual address
+                    lamports: lamports,
+                })
+            );
+
+            try {
+                const signature = await provider.sendTransaction(transaction, connection);
+                console.log('Transaction sent:', signature);
+
+                // You would also need to call Raydium's smart contract or API here
+                // to handle liquidity pool interactions and yield tracking.
+
+                alert('Deposit successful');
+            } catch (err) {
+                console.error('Deposit failed:', err);
+                alert('Deposit failed');
+            }
         }
 
-        function closeAccount() {
-            alert('Close Account clicked');
-            // Implement close account logic here
+        async function closeAccount() {
+            if (!provider || !provider.isPhantom) {
+                alert('Please connect your wallet first');
+                return;
+            }
+            const percentage = document.querySelector('input[name="closePercentage"]:checked').value;
+            
+            // Retrieve the total amount deposited (mock example)
+            // You need to fetch this from your storage or smart contract
+            const totalDeposited = 100; // Example total deposited in SOL
+            const amountToWithdraw = (totalDeposited * percentage) / 100;
+
+            // Convert amount to lamports (Solana's smallest unit)
+            const lamports = amountToWithdraw * 1e9; // 1 SOL = 1e9 lamports
+
+            const transaction = new Transaction().add(
+                SystemProgram.transfer({
+                    fromPubkey: new PublicKey('Raydium_Liquidity_Pool_Address'), // Replace with actual address
+                    toPubkey: provider.publicKey,
+                    lamports: lamports,
+                })
+            );
+
+            try {
+                const signature = await provider.sendTransaction(transaction, connection);
+                console.log('Transaction sent:', signature);
+
+                // You would also need to call Raydium's smart contract or API here
+                // to handle liquidity pool interactions and yield withdrawal.
+
+                alert('Account closed successfully');
+            } catch (err) {
+                console.error('Account closing failed:', err);
+                alert('Account closing failed');
+            }
         }
 
-        function openDisplayBalanceForm() {
-            document.getElementById('displayBalanceForm').style.display = 'block';
+        async function displayBalanceAndInterest() {
+            if (!provider || !provider.isPhantom) {
+                alert('Please connect your wallet first');
+                return;
+            }
+
+            // Mock example data
+            const solBalance = 10; // Example balance in SOL
+            const usdBalance = solBalance * 20; // Example conversion rate
+            const dogCoinInterest = 5; // Example pending interest in DogCoin
+
+            document.getElementById('solBalance').innerText = solBalance + ' SOL';
+            document.getElementById('usdBalance').innerText = '$' + usdBalance.toFixed(2);
+            document.getElementById('dogCoinInterest').innerText = dogCoinInterest + ' DOG';
         }
 
-        function closeDisplayBalanceForm() {
-            document.getElementById('displayBalanceForm').style.display = 'none';
+        function openForm(formId) {
+            if (formId === 'displayBalanceForm') {
+                displayBalanceAndInterest();
+            }
+            document.getElementById(formId).style.display = 'block';
+        }
+
+        function closeForm(formId) {
+            document.getElementById(formId).style.display = 'none';
         }
     </script>
 </body>
 </html>
-
