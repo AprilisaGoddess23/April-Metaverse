@@ -167,8 +167,7 @@
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
         <a href="#whitepaper">Whitepaper</a>
-        <a href="#april-metaverse">April Metaverse</a>
-        <a href="#april-savings-account">April Savings Account</a>
+        <a href="#april-Investments-account">April Investments Account</a>
     </nav>
     <div class="container">
         <section id="home">
@@ -181,10 +180,9 @@
         </section>
         <section id="about">
             <h2>About April Investments</h2>
-            <p>April Investments is shaping the future of finance with a commitment to integrity and customer-centricity. We prioritize your long-term gains with minimal volatility, backed by over $74 billion in managed assets.</p>
+            <p>April Investments is shaping the future of finance with a commitment to integrity and customer-centricity. We prioritize your long-term gains with minimal volatility, backed by over $82 billion in managed assets.</p>
             <p>We offer the best crypto investment opportunities and products, meticulously designed for both short-term and long-term gains with low levels of negative volatility. Our products are characterized by safety, effective marketing, and meticulous management.</p>
             <p>Established in 1990, April Investments has earned a reputation for trustworthiness and reliability in financial services and technology.</p>
-            <p>April Investments was named after the Founder's wife April. She is his inspiration and motivation for creating the world's best financial products and services.</p>
         </section>
         <section id="contact">
             <h2>Contact Us</h2>
@@ -193,12 +191,12 @@
         <section id="whitepaper">
             <h2>April Investments Whitepaper</h2>
             <p>April Investments is the investment firm of the future. We pride ourselves on integrity and doing the right thing for our customers. We look out for the best interests of our customers and focus on achieving long-term gains with minimal negative volatility.</p>
-            <p>April Investments offers a variety of crypto investment opportunities designed to deliver both short-term and long-term gains while maintaining very low levels of risk. Our products are safe, well-marketed, and backed by over $74 billion in assets under management.</p>
+            <p>April Investments offers a variety of crypto investment opportunities designed to deliver both short-term and long-term gains while maintaining very low levels of risk. Our products are safe, well-marketed, and backed by over $82 billion in assets under management.</p>
 
             <h3>Cryptocurrency</h3>
-
+            
             <h4><span class="smaller-bold">DogCoin (DOG)</span></h4>
-            <p>DogCoin is an SPL token built on the Solana blockchain and serves as a global currency, April Metaverse currency, and investment vehicle.</p>
+            <p>DogCoin is an SPL token built on the Solana blockchain and serves as a global currency and investment vehicle.</p>
 
             <h5><span class="smaller-bold">Tokenomics:</span></h5>
             <ul>
@@ -213,21 +211,12 @@
                 <li>20% to Marketing.</li>
                 <li>10% to Founder.</li>
             </ul>
-            <p>DogCoin aims to be the leading currency and investment vehicle globally, offering a safe haven for crypto investors through our commitment to product integrity and service excellence.</p>
 
-            <p>DogCoin offers the fastest and least expensive transfers of any cryptocurrency or fiat currency. It serves as both a currency and investment and offers higher levels of potential gains and liquidity than any other investment including stocks, bonds, mutual funds, annuities, high interest savings accounts, and real estate. DogCoin is the safest and most superior investment currently available on the market.</p>
-
-            <p>April Investments' CEO Josh Zielinski bought about 83.4% of the DogCoin supply early on and pledges to never sell any of these coins. This will help to stabilize the price, reduce downward volatility, and keep the price moving onward and upward.</p>
-            <p>Buy DogCoin on the Jupiter DEX.</p>
-            </section>
-            <section id="april-metaverse">
-            <h2>April Metaverse</h2>
-            <p>The April Metaverse is a VR/AR 3D world that users can build experiences on top of. It is the culmination of gaming, social media, and investments. The world is the size of Earth, the Moon, and Mars and has the terrains of each of these places. The April Metaverse has 1,000,000,000 plots of digital land that users can purchase as NFTs and build experiences on top of. These experiences can include anything an owner can dream up including video games, social experiences, advertising, digital asset mining, and more.</p>
         </section>
-        <section id="april-savings-account">
-            <h2>April Savings Account</h2>
+        <section id="april-Investments-account">
+            <h2>April Investments Account</h2>
             <p>Earn rewards by holding your tokens with us.</p>
-            <p>Earn an interest rate of 8.31% APR with the flexibility to withdraw your funds anytime without penalty. Interest is paid in DOG.</p>
+            <p>Earn an interest rate of 8.31% APR with the flexibility to withdraw your funds anytime without penalty. Interest is paid in DOG. Simply connect your wallet and click Deposit SOL to open an account.</p>
             <div class="button-container">
                 <button class="connect-wallet-btn" onclick="connectWallet()">Connect Wallet</button>
                 <button class="btn" onclick="openForm('depositForm')">Deposit SOL</button>
@@ -263,16 +252,10 @@
             <h2>Close Account</h2>
             <div class="close-amount-options">
                 <label>
-                    <input type="radio" name="close-amount-option" value="half"> 25%
+                    <input type="radio" name="close-amount-option" value="half"> Withdraw half
                 </label>
                 <label>
-                    <input type="radio" name="close-amount-option" value="all"> 50%
-                </label>
-                <label>
-                    <input type="radio" name="close-amount-option" value="half"> 75%
-                </label>
-                <label>
-                    <input type="radio" name="close-amount-option" value="all"> 100%
+                    <input type="radio" name="close-amount-option" value="all"> Withdraw all
                 </label>
             </div>
             <button type="button" class="btn" onclick="closeAccount()">Close Account</button>
@@ -305,7 +288,7 @@
             }
             try {
                 // Transaction logic here
-                alert(Deposited ${depositAmount} SOL);
+                alert(`Deposited ${depositAmount} SOL`);
                 closeForm('depositForm');
             } catch (err) {
                 console.error(err);
@@ -320,12 +303,13 @@
                 const usdBalance = solBalance * 25; // Placeholder conversion rate, 1 SOL = 25 USD
                 const dogInterest = await getInterest(publicKey, "DOG");
 
-                document.getElementById("balanceDisplay").innerText = 
-                    SOL Balance: ${solBalance} SOL
+                document.getElementById("balanceDisplay").innerText = `
+                    SOL Balance: {solBalance} SOL
                     USD Balance: ${usdBalance} USD
                     
                     Pending DogCoin Interest: ${dogInterest} DOG
-                ;
+                    
+                `;
                 openForm('balanceForm');
             } catch (err) {
                 console.error(err);
@@ -372,3 +356,4 @@
     </script>
 </body>
 </html>
+
