@@ -97,11 +97,6 @@
         }
         .form-container .cancel {
             background-color: red;
-            color: white;
-            padding: 16px 20px; /* Matching size to .btn */
-            border: none;
-            cursor: pointer;
-            width: 100%;
         }
         .form-container .btn:hover, .open-button:hover {
             opacity: 1;
@@ -173,7 +168,7 @@
         <a href="#contact">Contact</a>
         <a href="#whitepaper">Whitepaper</a>
         <a href="#april-metaverse">April Metaverse</a>
-        <a href="#april-investments-account">April Investments Account</a>
+        <a href="#april-savings-account">April Savings Account</a>
     </nav>
     <div class="container">
         <section id="home">
@@ -224,19 +219,20 @@
 
             <p>April Investments' CEO Josh Zielinski bought about 83.4% of the DogCoin supply early on and pledges to never sell any of these coins. This will help to stabilize the price, reduce downward volatility, and keep the price moving onward and upward.</p>
             <p>Buy DogCoin on the Jupiter DEX.</p>
-        </section>
-        <section id="april-metaverse">
+            </section>
+            <section id="april-metaverse">
             <h2>April Metaverse</h2>
             <p>The April Metaverse is a VR/AR 3D world that users can build experiences on top of. It is the culmination of gaming, social media, and investments. The world is the size of Earth, the Moon, and Mars and has the terrains of each of these places. The April Metaverse has 1,000,000,000 plots of digital land that users can purchase as NFTs and build experiences on top of. These experiences can include anything an owner can dream up including video games, social experiences, advertising, digital asset mining, and more.</p>
         </section>
-        <section id="april-investments-account">
-            <h2>April Investments Account</h2>
-            <p>The April Investments Account earns investors 8.31% APR in DogCoin on their SOL deposits. Simply connect your wallet and click the deposit SOL button to open an account</p>
+        <section id="april-savings-account">
+            <h2>April Savings Account</h2>
+            <p>Earn rewards by holding your tokens with us.</p>
+            <p>Earn an interest rate of 8.31% APR with the flexibility to withdraw your funds anytime without penalty. Interest is paid in DOG.</p>
             <div class="button-container">
-                <button id="connect-wallet-btn" class="connect-wallet-btn">Connect Wallet</button>
-                <button onclick="openForm('deposit-form')">Deposit SOL</button>
-                <button onclick="openForm('display-balance-form')">Display Balance and Interest</button>
-                <button onclick="openForm('close-account-form')">Close Account</button>
+                <button class="connect-wallet-btn" onclick="connectWallet()">Connect Wallet</button>
+                <button class="btn" onclick="openForm('depositForm')">Deposit SOL</button>
+                <button class="btn" onclick="displayBalanceAndInterest()">Display Balance and Interest</button>
+                <button class="btn" onclick="openForm('closeForm')">Close Account</button>
             </div>
         </section>
     </div>
@@ -244,131 +240,135 @@
         <p>&copy; 2024 April Investments. All rights reserved.</p>
     </footer>
 
-    <!-- Deposit Form -->
-    <div id="deposit-form" class="form-popup">
+    <div class="form-popup" id="depositForm">
         <form class="form-container">
             <h2>Deposit SOL</h2>
-            <input type="text" id="deposit-amount" placeholder="Amount (SOL)">
+            <label for="deposit-amount"><b>Amount in SOL</b></label>
+            <input type="text" placeholder="Enter amount" name="deposit-amount" id="deposit-amount" required>
             <button type="button" class="btn" onclick="depositSOL()">Deposit</button>
-            <button type="button" class="cancel" onclick="closeForm('deposit-form')">Close</button>
+            <button type="button" class="btn cancel" onclick="closeForm('depositForm')">Close</button>
         </form>
     </div>
 
-    <!-- Display Balance and Interest Form -->
-    <div id="display-balance-form" class="form-popup">
+    <div class="form-popup" id="balanceForm">
         <form class="form-container">
-            <h2>Balance and Interest</h2>
-            <p id="balance-info">Balance:  0.00 (SOL)</p>
-            <p id="balance-info">Balance: $0.00 (USD)</p>
-            
-            <p id="interest-info">Pending DogCoin Interest: 0 DOG</p>
-            <button type="button" class="btn" onclick="fetchBalanceAndInterest()">Refresh</button>
-            <button type="button" class="cancel" onclick="closeForm('display-balance-form')">Close</button>
+            <h2>Account Balance</h2>
+            <p id="balanceDisplay"></p>
+            <button type="button" class="btn cancel" onclick="closeForm('balanceForm')">Close</button>
         </form>
     </div>
 
-    <!-- Close Account Form -->
-    <div id="close-account-form" class="form-popup">
+    <div class="form-popup" id="closeForm">
         <form class="form-container">
             <h2>Close Account</h2>
             <div class="close-amount-options">
-                <label><input type="radio" name="amount-option" value="all" checked> 25%</label>
-                <label><input type="radio" name="amount-option" value="partial"> 50%</label>
-                <label><input type="radio" name="amount-option" value="all" checked> 75%</label>
-                <label><input type="radio" name="amount-option" value="partial"> 100%</label>
+                <label>
+                    <input type="radio" name="close-amount-option" value="half"> 25%
+                </label>
+                <label>
+                    <input type="radio" name="close-amount-option" value="all"> 50%
+                </label>
+                <label>
+                    <input type="radio" name="close-amount-option" value="half"> 75%
+                </label>
+                <label>
+                    <input type="radio" name="close-amount-option" value="all"> 100%
+                </label>
             </div>
             <button type="button" class="btn" onclick="closeAccount()">Close Account</button>
-            <button type="button" class="cancel" onclick="closeForm('close-account-form')">Close</button>
+            <button type="button" class="btn cancel" onclick="closeForm('closeForm')">Close</button>
         </form>
     </div>
 
-    <!-- JavaScript for Dapp -->
-    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.39.2/dist/web3.min.js"></script>
     <script>
-        let walletConnected = false;
+        const solanaWeb3 = window.solanaWeb3;
+        let connection;
+        let publicKey;
 
-        // Handle wallet connection
-        document.getElementById('connect-wallet-btn').addEventListener('click', async () => {
-            if (window.solana && window.solana.isPhantom) {
-                try {
-                    await window.solana.connect();
-                    walletConnected = true;
-                    document.getElementById('connect-wallet-btn').innerText = 'Wallet Connected';
-                } catch (error) {
-                    console.error('User denied wallet connection', error);
-                }
-            } else {
-                alert('Phantom wallet not found. Please install it.');
+        async function connectWallet() {
+            try {
+                const resp = await window.solana.connect();
+                publicKey = resp.publicKey.toString();
+                alert("Connected to wallet: " + publicKey);
+                console.log("Public key: " + publicKey);
+            } catch (err) {
+                console.error(err);
+                alert("Failed to connect to wallet");
             }
-        });
-
-        // Open form
-        function openForm(formId) {
-            document.getElementById(formId).style.display = 'block';
         }
 
-        // Close form
-        function closeForm(formId) {
-            document.getElementById(formId).style.display = 'none';
-        }
-
-        // Deposit SOL
         async function depositSOL() {
-            const amount = document.getElementById('deposit-amount').value;
-            if (walletConnected) {
-                console.log(`Depositing ${amount} SOL`);
-                // Logic for depositing SOL
-            } else {
-                alert('Please connect your wallet first.');
+            const depositAmount = parseFloat(document.getElementById("deposit-amount").value);
+            if (!depositAmount) {
+                alert("Please enter a valid amount to deposit.");
+                return;
+            }
+            try {
+                // Transaction logic here
+                alert(Deposited ${depositAmount} SOL);
+                closeForm('depositForm');
+            } catch (err) {
+                console.error(err);
+                alert("Failed to deposit SOL");
             }
         }
 
-        // Fetch balance and interest
-        async function fetchBalanceAndInterest() {
-            if (walletConnected) {
-                // Fetch balance and interest logic
-                document.getElementById('balance-info').innerText = 'Balance: $100.00 (SOL), $50.00 (USD)';
-                document.getElementById('interest-info').innerText = 'Pending DogCoin Interest: 100 DOG';
-            } else {
-                alert('Please connect your wallet first.');
+        async function displayBalanceAndInterest() {
+            try {
+                // Fetch balances and interests
+                const solBalance = await getBalance(publicKey);
+                const usdBalance = solBalance * 25; // Placeholder conversion rate, 1 SOL = 25 USD
+                const dogInterest = await getInterest(publicKey, "DOG");
+
+                document.getElementById("balanceDisplay").innerText = 
+                    SOL Balance: ${solBalance} SOL
+                    USD Balance: ${usdBalance} USD
+                    
+                    Pending DogCoin Interest: ${dogInterest} DOG
+                ;
+                openForm('balanceForm');
+            } catch (err) {
+                console.error(err);
+                alert("Failed to display balance and interest");
             }
         }
 
-        // Close account
         async function closeAccount() {
-            const amountOption = document.querySelector('input[name="amount-option"]:checked').value;
-            const partialAmount = document.getElementById('partial-amount').value;
-
-            if (walletConnected) {
-                console.log(`Closing account: ${amountOption} ${partialAmount ? 'with amount ' + partialAmount : ''}`);
-                // Logic for closing account
-            } else {
-                alert('Please connect your wallet first.');
+            const selectedOption = document.querySelector('input[name="close-amount-option"]:checked').value;
+            try {
+                if (selectedOption === "half") {
+                    // Withdraw half logic here
+                } else {
+                    // Withdraw all logic here
+                }
+                alert("Account closed successfully");
+                closeForm('closeForm');
+            } catch (err) {
+                console.error(err);
+                alert("Failed to close account");
             }
         }
 
-        // Placeholder functions for liquidity mining operations
-        async function harvestDOGTokens() {
-            console.log('Harvesting DOG tokens...');
-            // Logic to harvest DOG tokens
+        function openForm(formId) {
+            document.getElementById(formId).style.display = "block";
         }
 
-        async function sellDOGForSOL() {
-            console.log('Selling DOG for SOL...');
-            // Logic to sell DOG for SOL
+        function closeForm(formId) {
+            document.getElementById(formId).style.display = "none";
         }
 
-        async function reinvestIntoLiquidityMiningFarm() {
-            console.log('Reinvesting into liquidity mining farm...');
-            // Logic to reinvest into liquidity mining farm
+        async function getBalance(publicKey) {
+            // Fetch the balance from blockchain
+            return 100; // Placeholder value
         }
 
-        // Automated liquidity mining operations
-        setInterval(async () => {
-            await harvestDOGTokens();
-            await sellDOGForSOL();
-            await reinvestIntoLiquidityMiningFarm();
-        }, 60000); // Every minute
+        async function getInterest(publicKey, token) {
+            // Fetch the interest for the specified token
+            if (token === "DOG") {
+                return 1000; // Placeholder value
+            }
+            return 0;
+        }
     </script>
 </body>
 </html>
