@@ -138,6 +138,7 @@
         .close-amount-options label {
             margin-right: 10px;
         }
+
         .enter-metaverse-btn {
             background-color: #004d00; /* Dark green */
             color: white;
@@ -234,72 +235,156 @@
             </ul>
             <p>DogCoin aims to be the leading currency and investment vehicle globally, offering a safe haven for crypto investors through our commitment to product integrity and service excellence.</p>
 
-            <p>DogCoin offers the fastest and least expensive transfers of any cryptocurrency or fiat currency. It serves as both a currency and investment and offers higher levels of potential gains and safety compared to many other options available on the market. We believe DogCoin has the potential to become the leading currency and investment vehicle globally.</p>
+            <p>DogCoin offers the fastest and least expensive transfers of any cryptocurrency or fiat currency. It serves as both a currency and investment and offers higher levels of potential gains and liquidity than any other investment including stocks, bonds, mutual funds, annuities, high interest savings accounts, and real estate. DogCoin is the safest and most superior investment currently available on the market.</p>
+
+            <p>April Investments' CEO Josh Zielinski bought about 83.4% of the DogCoin supply early on and pledges to never sell any of these coins. This will help to stabilize the price, reduce downward volatility, and keep the price moving onward and upward.</p>
+            <p>Buy DogCoin on the Jupiter DEX.</p>
         </section>
         <section id="april-metaverse">
             <h2>April Metaverse</h2>
-            <p>The April Metaverse offers a fully immersive digital environment where users can interact, play, and conduct business using DogCoin as the primary currency.</p>
+            <p>The April Metaverse is a VR/AR 3D world that users can build experiences on top of. It is the culmination of gaming, social media, and investments. The world is the size of Earth, the Moon, and Mars and has the terrains of each of these places. The April Metaverse has 1,000,000,000 plots of digital land that users can purchase as NFTs and build experiences on top of. These experiences can include anything an owner can dream up including video games, social experiences, advertising, digital asset mining, and more.</p>
             <button class="enter-metaverse-btn">Enter April Metaverse</button>
         </section>
         <section id="april-savings-account">
             <h2>April Savings Account</h2>
-            <p>Secure your financial future with our high-interest savings accounts.</p>
             <div class="button-container">
-                <button onclick="openForm('depositForm')">Deposit SOL</button>
-                <button onclick="openForm('balanceForm')">Display Balance and Interest</button>
-                <button onclick="openForm('closeForm')">Close Account</button>
-            </div>
-            <div class="form-popup" id="depositForm">
-                <form class="form-container">
-                    <h2>Deposit SOL</h2>
-                    <label for="deposit-amount"><b>Amount</b></label>
-                    <input type="text" placeholder="Enter amount" name="deposit-amount" required>
-                    <button type="submit" class="btn">Deposit</button>
-                    <button type="button" class="btn cancel" onclick="closeForm('depositForm')">Close</button>
-                </form>
-            </div>
-            <div class="form-popup" id="balanceForm">
-                <form class="form-container">
-                    <h2>Account Balance</h2>
-                    <p>SOL Balance: <span id="solBalance">0</span></p>
-                    <p>USD Balance: <span id="usdBalance">0</span></p>
-                    <p>Pending DogCoin Interest: <span id="dogCoinInterest">0</span></p>
-                    <button type="button" class="btn cancel" onclick="closeForm('balanceForm')">Close</button>
-                </form>
-            </div>
-            <div class="form-popup" id="closeForm">
-                <form class="form-container">
-                    <h2>Close Account</h2>
-                    <div class="close-amount-options">
-                        <label><input type="radio" name="close-amount" value="full" checked> Full Amount</label>
-                        <label><input type="radio" name="close-amount" value="partial"> Partial Amount</label>
-                    </div>
-                    <label for="close-partial-amount"><b>Partial Amount</b></label>
-                    <input type="text" placeholder="Enter partial amount" name="close-partial-amount" id="close-partial-amount" disabled>
-                    <button type="submit" class="btn">Close Account</button>
-                    <button type="button" class="btn cancel" onclick="closeForm('closeForm')">Close</button>
-                </form>
+                <button id="connect-wallet-btn" class="connect-wallet-btn">Connect Wallet</button>
+                <button onclick="openForm('deposit-form')">Deposit SOL</button>
+                <button onclick="openForm('display-balance-form')">Display Balance and Interest</button>
+                <button onclick="openForm('close-account-form')">Close Account</button>
             </div>
         </section>
     </div>
     <footer>
-        <p>&copy; 2023 April Investments. All rights reserved.</p>
+        <p>&copy; 2024 April Investments. All rights reserved.</p>
     </footer>
+
+    <!-- Deposit Form -->
+    <div id="deposit-form" class="form-popup">
+        <form class="form-container">
+            <h2>Deposit SOL</h2>
+            <input type="text" id="deposit-amount" placeholder="Amount (SOL)">
+            <button type="button" class="btn" onclick="depositSOL()">Deposit</button>
+            <button type="button" class="cancel" onclick="closeForm('deposit-form')">Close</button>
+        </form>
+    </div>
+
+    <!-- Display Balance and Interest Form -->
+    <div id="display-balance-form" class="form-popup">
+        <form class="form-container">
+            <h2>Balance and Interest</h2>
+            <p id="balance-info">Balance: 0.00 SOL</p>
+            <p id="balance-info">Balance: $0.00 USD</p>
+            
+            <p id="interest-info">Pending DogCoin Interest: 0 DOG</p>
+            <button type="button" class="btn" onclick="fetchBalanceAndInterest()">Refresh</button>
+            <button type="button" class="cancel" onclick="closeForm('display-balance-form')">Close</button>
+        </form>
+    </div>
+
+    <!-- Close Account Form -->
+    <div id="close-account-form" class="form-popup">
+        <form class="form-container">
+            <h2>Close Account</h2>
+            <div class="close-amount-options">
+                <label><input type="radio" name="amount-option" value="all" checked> 25%</label>
+                <label><input type="radio" name="amount-option" value="partial"> 50%</label>
+                <label><input type="radio" name="amount-option" value="all" checked> 75%</label>
+                <label><input type="radio" name="amount-option" value="partial"> 100%</label>
+                <input type="text" id="partial-amount" placeholder="Amount (SOL)">
+            </div>
+            <button type="button" class="btn" onclick="closeAccount()">Close Account</button>
+            <button type="button" class="cancel" onclick="closeForm('close-account-form')">Close</button>
+        </form>
+    </div>
+
+    <!-- JavaScript for Dapp -->
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.39.2/dist/web3.min.js"></script>
     <script>
-        function openForm(formId) {
-            document.getElementById(formId).style.display = "block";
-        }
+        let walletConnected = false;
 
-        function closeForm(formId) {
-            document.getElementById(formId).style.display = "none";
-        }
-
-        document.querySelector('input[name="close-amount"]').forEach((input) => {
-            input.addEventListener('change', (event) => {
-                document.getElementById('close-partial-amount').disabled = event.target.value !== 'partial';
-            });
+        // Handle wallet connection
+        document.getElementById('connect-wallet-btn').addEventListener('click', async () => {
+            if (window.solana && window.solana.isPhantom) {
+                try {
+                    await window.solana.connect();
+                    walletConnected = true;
+                    document.getElementById('connect-wallet-btn').innerText = 'Wallet Connected';
+                } catch (error) {
+                    console.error('User denied wallet connection', error);
+                }
+            } else {
+                alert('Phantom wallet not found. Please install it.');
+            }
         });
+
+        // Open form
+        function openForm(formId) {
+            document.getElementById(formId).style.display = 'block';
+        }
+
+        // Close form
+        function closeForm(formId) {
+            document.getElementById(formId).style.display = 'none';
+        }
+
+        // Deposit SOL
+        async function depositSOL() {
+            const amount = document.getElementById('deposit-amount').value;
+            if (walletConnected) {
+                console.log(Depositing ${amount} SOL);
+                // Logic for depositing SOL
+            } else {
+                alert('Please connect your wallet first.');
+            }
+        }
+
+        // Fetch balance and interest
+        async function fetchBalanceAndInterest() {
+            if (walletConnected) {
+                // Fetch balance and interest logic
+                document.getElementById('balance-info').innerText = 'Balance: $100.00 (SOL), $50.00 (USD)';
+                document.getElementById('interest-info').innerText = 'Pending DogCoin Interest: 100 DOG';
+            } else {
+                alert('Please connect your wallet first.');
+            }
+        }
+
+        // Close account
+        async function closeAccount() {
+            const amountOption = document.querySelector('input[name="amount-option"]:checked').value;
+            const partialAmount = document.getElementById('partial-amount').value;
+
+            if (walletConnected) {
+                console.log(Closing account: ${amountOption} ${partialAmount ? 'with amount ' + partialAmount : ''});
+                // Logic for closing account
+            } else {
+                alert('Please connect your wallet first.');
+            }
+        }
+
+        // Placeholder functions for liquidity mining operations
+        async function harvestDOGTokens() {
+            console.log('Harvesting DOG tokens...');
+            // Logic to harvest DOG tokens
+        }
+
+        async function sellDOGForSOL() {
+            console.log('Selling DOG for SOL...');
+            // Logic to sell DOG for SOL
+        }
+
+        async function reinvestIntoLiquidityMiningFarm() {
+            console.log('Reinvesting into liquidity mining farm...');
+            // Logic to reinvest into liquidity mining farm
+        }
+
+        // Automated liquidity mining operations
+        setInterval(async () => {
+            await harvestDOGTokens();
+            await sellDOGForSOL();
+            await reinvestIntoLiquidityMiningFarm();
+        }, 60000); // Every minute
     </script>
 </body>
 </html>
-
