@@ -257,7 +257,7 @@
     <div id="display-balance-form" class="form-popup">
         <form class="form-container">
             <h2>Balance and Interest</h2>
-            <p id="balance-info">Balance: $0.00 (SOL), $0.00 (USD)</p>
+            <p id="balance-info">Balance: $0.00 (SOL) $0.00 (USD)</p>
             <p id="interest-info">Pending DogCoin Interest: 0 DOG</p>
             <button type="button" class="btn" onclick="fetchBalanceAndInterest()">Refresh</button>
             <button type="button" class="cancel" onclick="closeForm('display-balance-form')">Close</button>
@@ -269,8 +269,10 @@
         <form class="form-container">
             <h2>Close Account</h2>
             <div class="close-amount-options">
-                <label><input type="radio" name="amount-option" value="all" checked> Close All</label>
-                <label><input type="radio" name="amount-option" value="partial"> Close Partial</label>
+                <label><input type="radio" name="amount-option" value="all" checked> 25%</label>
+                <label><input type="radio" name="amount-option" value="partial"> 50%</label>
+                <label><input type="radio" name="amount-option" value="all" checked> 75%</label>
+                <label><input type="radio" name="amount-option" value="partial"> 100%</label>
                 <input type="text" id="partial-amount" placeholder="Amount (SOL)">
             </div>
             <button type="button" class="btn" onclick="closeAccount()">Close Account</button>
