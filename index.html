@@ -222,153 +222,122 @@
             </section>
             <section id="april-metaverse">
             <h2>April Metaverse</h2>
-            <p>The April Metaverse is a VR/AR 3D world that users can build experiences on top of. It is the culmination of gaming, social media, and investments. The world is the size of Earth, the Moon, and Mars and has the terrains of each of these places. The April Metaverse has 1,000,000,000 plots of digital land that users can purchase as NFTs and build experiences on top of. These experiences can include anything an owner can dream up including video games, social experiences, advertising, digital asset mining, and more.</p>
+            <p>The April Metaverse offers an unparalleled virtual reality experience, with DogCoin as the primary currency.</p>
         </section>
         <section id="april-savings-account">
             <h2>April Savings Account</h2>
-            <p>Earn rewards by holding your tokens with us.</p>
-            <p>Earn an interest rate of 8.31% APR with the flexibility to withdraw your funds anytime without penalty. Interest is paid in DOG.</p>
+            <p>Invest in our high-yield savings account with competitive interest rates and low risk.</p>
+            <button class="connect-wallet-btn" id="connectWalletButton">Connect Wallet</button>
             <div class="button-container">
-                <button class="connect-wallet-btn" onclick="connectWallet()">Connect Wallet</button>
-                <button class="btn" onclick="openForm('depositForm')">Deposit SOL</button>
-                <button class="btn" onclick="displayBalanceAndInterest()">Display Balance and Interest</button>
-                <button class="btn" onclick="openForm('closeForm')">Close Account</button>
+                <button id="depositSOL">Deposit SOL</button>
+                <button id="displayBalanceAndInterest">Display Balance and Interest</button>
+                <button id="closeAccount">Close Account</button>
+            </div>
+            <div class="form-popup" id="balanceAndInterestForm">
+                <form action="/action_page.php" class="form-container">
+                    <h2>Account Balance and Interest</h2>
+                    <label for="solBalance"><b>SOL Balance:</b></label>
+                    <input type="text" id="solBalance" readonly>
+                    <label for="usdBalance"><b>USD Balance:</b></label>
+                    <input type="text" id="usdBalance" readonly>
+                    <label for="dogInterest"><b>Pending DogCoin Interest:</b></label>
+                    <input type="text" id="dogInterest" readonly>
+                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                </form>
+            </div>
+            <div class="form-popup" id="closeAccountForm">
+                <form action="/action_page.php" class="form-container">
+                    <h2>Close Account</h2>
+                    <div class="close-amount-options">
+                        <label><input type="radio" name="closeAmount" value="0.25" checked> 25%</label>
+                        <label><input type="radio" name="closeAmount" value="0.5"> 50%</label>
+                        <label><input type="radio" name="closeAmount" value="0.75"> 75%</label>
+                        <label><input type="radio" name="closeAmount" value="1"> 100%</label>
+                    </div>
+                    <button type="button" class="btn" onclick="confirmCloseAccount()">Confirm</button>
+                    <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+                </form>
             </div>
         </section>
     </div>
     <footer>
-        <p>&copy; 2024 April Investments. All rights reserved.</p>
+        <p>© 2024 April Investments. All rights reserved.</p>
     </footer>
 
-    <div class="form-popup" id="depositForm">
-        <form class="form-container">
-            <h2>Deposit SOL</h2>
-            <label for="deposit-amount"><b>Amount in SOL</b></label>
-            <input type="text" placeholder="Enter amount" name="deposit-amount" id="deposit-amount" required>
-            <button type="button" class="btn" onclick="depositSOL()">Deposit</button>
-            <button type="button" class="btn cancel" onclick="closeForm('depositForm')">Close</button>
-        </form>
-    </div>
-
-    <div class="form-popup" id="balanceForm">
-        <form class="form-container">
-            <h2>Account Balance</h2>
-            <p id="balanceDisplay"></p>
-            <button type="button" class="btn cancel" onclick="closeForm('balanceForm')">Close</button>
-        </form>
-    </div>
-
-    <div class="form-popup" id="closeForm">
-        <form class="form-container">
-            <h2>Close Account</h2>
-            <div class="close-amount-options">
-                <label>
-                    <input type="radio" name="close-amount-option" value="half"> 25%
-                </label>
-                <label>
-                    <input type="radio" name="close-amount-option" value="all"> 50%
-                </label>
-                <label>
-                    <input type="radio" name="close-amount-option" value="half"> 75%
-                </label>
-                <label>
-                    <input type="radio" name="close-amount-option" value="all"> 100%
-                </label>
-            </div>
-            <button type="button" class="btn" onclick="closeAccount()">Close Account</button>
-            <button type="button" class="btn cancel" onclick="closeForm('closeForm')">Close</button>
-        </form>
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@project-serum/serum@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@project-serum/anchor@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@raydium-io/raydium-sdk@latest"></script>
     <script>
-        const solanaWeb3 = window.solanaWeb3;
-        let connection;
-        let publicKey;
+        let wallet;
+        let connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
 
-        async function connectWallet() {
-            try {
-                const resp = await window.solana.connect();
-                publicKey = resp.publicKey.toString();
-                alert("Connected to wallet: " + publicKey);
-                console.log("Public key: " + publicKey);
-            } catch (err) {
-                console.error(err);
-                alert("Failed to connect to wallet");
-            }
+        document.getElementById('connectWalletButton').addEventListener('click', async () => {
+            wallet = await solanaWeb3.Wallet.connect();
+            console.log('Wallet connected:', wallet.publicKey.toBase58());
+        });
+
+        document.getElementById('displayBalanceAndInterest').addEventListener('click', async () => {
+            openForm();
+            const solBalance = await connection.getBalance(wallet.publicKey);
+            document.getElementById('solBalance').value = solBalance / solanaWeb3.LAMPORTS_PER_SOL;
+            document.getElementById('usdBalance').value = (solBalance / solanaWeb3.LAMPORTS_PER_SOL) * await getSOLPrice();
+            document.getElementById('dogInterest').value = await getPendingDogInterest(wallet.publicKey);
+        });
+
+        document.getElementById('closeAccount').addEventListener('click', () => {
+            document.getElementById('closeAccountForm').style.display = 'block';
+        });
+
+        function closeForm() {
+            document.getElementById('balanceAndInterestForm').style.display = 'none';
+            document.getElementById('closeAccountForm').style.display = 'none';
         }
 
-        async function depositSOL() {
-            const depositAmount = parseFloat(document.getElementById("deposit-amount").value);
-            if (!depositAmount) {
-                alert("Please enter a valid amount to deposit.");
-                return;
-            }
-            try {
-                // Transaction logic here
-                alert(`Deposited ${depositAmount} SOL`);
-                closeForm('depositForm');
-            } catch (err) {
-                console.error(err);
-                alert("Failed to deposit SOL");
-            }
+        function openForm() {
+            document.getElementById('balanceAndInterestForm').style.display = 'block';
         }
 
-        async function displayBalanceAndInterest() {
-            try {
-                // Fetch balances and interests
-                const solBalance = await getBalance(publicKey);
-                const usdBalance = solBalance * 25; // Placeholder conversion rate, 1 SOL = 25 USD
-                const dogInterest = await getInterest(publicKey, "DOG");
-
-                document.getElementById("balanceDisplay").innerText = `
-                    SOL Balance: ${solBalance} SOL
-                    USD Balance: ${usdBalance} USD
-                    
-                    Pending DogCoin Interest: ${dogInterest} DOG
-                `;
-                openForm('balanceForm');
-            } catch (err) {
-                console.error(err);
-                alert("Failed to display balance and interest");
-            }
+        async function getSOLPrice() {
+            // Fetch SOL price from a reliable API
+            return 35; // Example static price
         }
 
-        async function closeAccount() {
-            const selectedOption = document.querySelector('input[name="close-amount-option"]:checked').value;
-            try {
-                if (selectedOption === "half") {
-                    // Withdraw half logic here
-                } else {
-                    // Withdraw all logic here
-                }
-                alert("Account closed successfully");
-                closeForm('closeForm');
-            } catch (err) {
-                console.error(err);
-                alert("Failed to close account");
-            }
+        async function getPendingDogInterest(publicKey) {
+            // Logic to fetch pending DogCoin interest from your backend or blockchain
+            return 1000; // Example static interest
         }
 
-        function openForm(formId) {
-            document.getElementById(formId).style.display = "block";
+        async function confirmCloseAccount() {
+            const closeAmount = document.querySelector('input[name="closeAmount"]:checked').value;
+            // Logic to close the account and withdraw the specified amount
+            console.log(`Closing account with ${closeAmount * 100}% balance.`);
+            closeForm();
         }
 
-        function closeForm(formId) {
-            document.getElementById(formId).style.display = "none";
+        // Liquidity Mining Algorithm
+        async function harvestDOGTokens() {
+            console.log("Harvesting DOG tokens...");
+            // Implement logic to harvest DOG tokens from your liquidity mining farm
         }
 
-        async function getBalance(publicKey) {
-            // Fetch the balance from blockchain
-            return 100; // Placeholder value
+        async function sellDOGForSOL() {
+            console.log("Selling DOG for SOL...");
+            // Implement logic to interact with Serum DEX to sell DOG tokens for SOL
         }
 
-        async function getInterest(publicKey, token) {
-            // Fetch the interest for the specified token
-            if (token === "DOG") {
-                return 1000; // Placeholder value
-            }
-            return 0;
+        async function reinvestIntoLiquidityMiningFarm() {
+            console.log("Reinvesting into liquidity mining farm...");
+            // Implement logic to reinvest the acquired SOL into the liquidity mining farm
         }
+
+        async function liquidityMiningAlgorithm() {
+            await harvestDOGTokens();
+            await sellDOGForSOL();
+            await reinvestIntoLiquidityMiningFarm();
+        }
+
+        setInterval(liquidityMiningAlgorithm, 60000); // Run the algorithm every minute
     </script>
 </body>
 </html>
